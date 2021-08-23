@@ -1,6 +1,9 @@
 package maker.memory
 
+import com.typesafe.config.ConfigFactory
 import io.ktor.application.*
+import io.ktor.config.*
+import io.ktor.http.*
 import kotlinx.coroutines.*
 import maker.memory.plugins.*
 import maker.memory.server_grpc.Server
@@ -10,28 +13,13 @@ fun main(args: Array<String>) {
 }
 
 fun server(args: Array<String>) = runBlocking {
-    grpc()
-    http(args)
-}
-
-suspend fun grpc() = coroutineScope {
-    val port = 50052
-    val server = Server(port)
-    val grpc = async {
-        server.start()
-        server.blockUntilShutdown()
-    }
-    grpc.join()
-}
-
-suspend fun http(args: Array<String>) = coroutineScope {
-    val http = async {
+    async {
+        Server(ConfigFactory.load().getInt("ktor.deployment.grpcPort")).start()
         io.ktor.server.netty.EngineMain.main(args)
     }
-    http.join()
 }
 
-
 fun Application.module() {
+    val port = environment.config.propertyOrNull("ktor.deployment.grpcPort")?.getString() ?: "8080"
     configureRouting()
 }
