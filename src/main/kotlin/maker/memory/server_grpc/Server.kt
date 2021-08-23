@@ -9,7 +9,7 @@ import service.grpc.ServiceGrpcKt
 import service.grpc.HelloReply
 import service.grpc.HelloRequest
 
-class GreeterServer constructor(
+class Server constructor(
     private val port: Int
 ) {
     private val server: Server = ServerBuilder
@@ -24,7 +24,7 @@ class GreeterServer constructor(
         Runtime.getRuntime().addShutdownHook(
             Thread {
                 println("*** shutting down gRPC server since JVM is shutting down")
-                this@GreeterServer.stop()
+                this@Server.stop()
                 println("*** server shut down")
             }
         )
