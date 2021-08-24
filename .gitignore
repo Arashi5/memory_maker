@@ -1,6 +1,6 @@
 .idea
 *.iml
-build
+/build
 target
 .gradle
 local.properties
