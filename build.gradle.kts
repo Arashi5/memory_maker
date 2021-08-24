@@ -64,6 +64,8 @@ dependencies {
 
     testImplementation("io.ktor:ktor-server-tests:$ktor_version")
     testImplementation("org.jetbrains.kotlin:kotlin-test:$kotlin_version")
+
+    implementation ("io.github.microutils:kotlin-logging:1.12.5")
 }
 
 java {

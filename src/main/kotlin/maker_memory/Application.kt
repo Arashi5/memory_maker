@@ -1,14 +1,15 @@
 package maker_memory
 
 import com.typesafe.config.ConfigFactory
-import maker_memory.plugins.*
+import maker_memory.routes.*
 import maker_memory.server_grpc.GrpcServer
 import io.ktor.server.netty.*
 import io.ktor.server.engine.*
-import io.ktor.application.*
+import mu.KotlinLogging
 
 fun  main(args: Array<String>) {
-    GrpcServer(args, ConfigFactory.load().getInt("ktor.deployment.grpcPort")).start()
+    val logger = KotlinLogging.logger {}
+    GrpcServer(args, ConfigFactory.load().getInt("ktor.deployment.grpcPort"), logger).start()
     embeddedServer(Netty, ConfigFactory.load().getInt("ktor.deployment.port")) {
         configureRouting()
     }.start(wait = true)

@@ -5,15 +5,18 @@ import io.grpc.ServerBuilder
 import io.grpc.protobuf.services.ProtoReflectionService
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
+import mu.KLogger
 import service.grpc.ServiceGrpcKt
 import service.grpc.HelloReply
 import service.grpc.HelloRequest
 import java.time.Instant
 import java.time.ZoneId
+import mu.KotlinLogging
 
-class GrpcServer constructor(
+class GrpcServer(
     private val args: Array<String>,
-    private val port: Int
+    private val port: Int,
+    private val logger: KLogger
 ) {
     private val server: Server = ServerBuilder
         .forPort(port)
@@ -23,15 +26,12 @@ class GrpcServer constructor(
 
     fun start() {
         server.start()
-        var dt = Instant.now().atZone(ZoneId.systemDefault()).toLocalDateTime()
-        println(java.lang.String.format("$dt [grpc] INFO server started, listening on $port"))
+        logger.info { "INFO server started, listening on $port"}
         Runtime.getRuntime().addShutdownHook(
             Thread {
-                dt = Instant.now().atZone(ZoneId.systemDefault()).toLocalDateTime()
-                println("$dt [grpc] shutting down gRPC server since JVM is shutting down")
+                logger.info {"[grpc] shutting down gRPC server since JVM is shutting down"}
                 this@GrpcServer.stop()
-                dt = Instant.now().atZone(ZoneId.systemDefault()).toLocalDateTime()
-                println("$dt [grpc] server shut down")
+                logger.info {"[grpc] server shut down"}
             }
         )
     }
