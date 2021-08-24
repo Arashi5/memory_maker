@@ -17,11 +17,11 @@ plugins {
 
 group = "maker.memory"
 version = "0.0.1"
-application {
-    mainClass.set("io.ktor.server.netty.EngineMain")
-    mainClass.set("memory.maker.grpc.ServerKt")
-}
 
+application {
+    mainClass.set("maker_memory.ApplicationKt")
+}
+val mainClassName = "mypackage.Hello"
 repositories {
     mavenCentral()
     mavenLocal()
@@ -42,6 +42,8 @@ sourceSets {
 
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
+    implementation("io.javalin:javalin:3.10.0")
+
     implementation("javax.annotation:javax.annotation-api:1.3.2")
     implementation("io.grpc:grpc-kotlin-stub:${grpcKotlinVersion}")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1")
@@ -68,6 +70,7 @@ java {
     sourceCompatibility = JavaVersion.toVersion(javaVersion)
     targetCompatibility = JavaVersion.toVersion(javaVersion)
 }
+
 
 tasks {
     compileKotlin {
