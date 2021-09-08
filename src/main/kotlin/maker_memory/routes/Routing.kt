@@ -4,6 +4,7 @@ import io.ktor.routing.*
 import io.ktor.application.*
 import io.ktor.request.*
 import io.ktor.response.*
+import maker_memory.user.User
 
 fun Application.configureRouting() {
 
@@ -13,11 +14,9 @@ fun Application.configureRouting() {
             call.respondText("Hello World!")
         }
         post("/user") {
-            val req =  call.receiveParameters()
-            println(req)
+         val res = call.receive<User>()
         }
     }
     routing {
-        customerById()
     }
 }

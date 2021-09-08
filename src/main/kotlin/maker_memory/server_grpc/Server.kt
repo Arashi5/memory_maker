@@ -9,9 +9,7 @@ import mu.KLogger
 import service.grpc.ServiceGrpcKt
 import service.grpc.HelloReply
 import service.grpc.HelloRequest
-import java.time.Instant
-import java.time.ZoneId
-import mu.KotlinLogging
+
 
 class GrpcServer(
     private val args: Array<String>,
@@ -30,7 +28,7 @@ class GrpcServer(
         Runtime.getRuntime().addShutdownHook(
             Thread {
                 logger.info {"[grpc] shutting down gRPC server since JVM is shutting down"}
-                this@GrpcServer.stop()
+                stop()
                 logger.info {"[grpc] server shut down"}
             }
         )
